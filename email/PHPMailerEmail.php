@@ -59,6 +59,6 @@ class PHPMailerEmail extends EmailAbstract
         }
 
         // Finally, try and send teh message
-        $mailer->Send();
+        return $mailer->Send();
     }
 }

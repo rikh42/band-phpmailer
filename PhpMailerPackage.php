@@ -22,5 +22,19 @@ class PhpMailerPackage extends ContainerAware implements PackageInterface
         // to be loaded by adding a direct mapping though.
         AutoLoadContainer::addMappings(array(
             'PHPMailer' => __DIR__.'/PHPMailer/class.phpmailer.php'));
+
+        // Make the 2 email classes we provide available as general services
+        // If you want to use them though, you should really just set the
+        // 'email' service to the one that you would prefer to use for everything
+
+        // First the normal email service using PHPMailer
+        $kernel->addService('email.phpmailer', '\phpmailer\email\PHPMailerEmail')
+            ->setMultiInstance();
+
+        // and then a special Debug emailer that lets you override to and from
+        // using the config settings
+        $kernel->addService('email.devmailer', '\phpmailer\email\DevEmail')
+            ->setMultiInstance()
+            ->setArguments(array('::service::config'));
     }
 }
