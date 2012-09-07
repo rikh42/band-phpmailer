@@ -11,11 +11,16 @@ namespace phpmailer;
 use snb\core\ContainerAware;
 use snb\core\PackageInterface;
 use snb\core\KernelInterface;
-use snb\core\AutoLoaderContainer;
+use snb\core\AutoLoadContainer;
 
 class PhpMailerPackage extends ContainerAware implements PackageInterface
 {
     public function boot(KernelInterface $kernel)
     {
+        // PHP Mailer expects it files to just be included, and has not
+        // been designed around PSR-0 Autoloaders. We can arrange for it
+        // to be loaded by adding a direct mapping though.
+        AutoLoadContainer::addMappings(array(
+            'PHPMailer' => __DIR__.'/PHPMailer/class.phpmailer.php'));
     }
 }
